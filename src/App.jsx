@@ -3,30 +3,49 @@ import SearchBar from "./components/SearchBar/SearchBar";
 import fetchSearch from "./gallery-api";
 import { useEffect, useState } from "react";
 import ImageGallery from "./components/ImageGallery/ImageGallery";
-import { ThreeDots } from "react-loader-spinner";
 import LoadMoreBtn from "./components/LoadMoreBtn/LoadMoreBtn";
 import ErrorMessage from "./components/ErrorMessage/ErrorMessage";
 import ImageModal from "./components/ImageModal/ImageModal";
+import toast, { Toaster } from "react-hot-toast";
+import Loader from "./components/Loader/Loader";
 
 function App() {
   const [query, setQuery] = useState("");
   const [images, setImages] = useState();
   const [page, setPage] = useState(1);
-  const [loader, setLoader] = useState(false);
+  const [loader, setLoader] = useState(true);
   const [error, serError] = useState(false);
   const [modalIsOpen, setIsOpen] = useState(false);
   const [modalImg, setModalImg] = useState();
   const [scroll, setScroll] = useState(false);
+  const [totalPages, setTotalPages] = useState(0);
+  const [loadMore, setLoadMore] = useState(false);
 
   useEffect(() => {
     async function fethGellery() {
       try {
         setLoader(true);
+        serError(false);
+        if (query.trim() === "") {
+          return;
+        }
         const data = await fetchSearch(query, page);
         if (!images) {
           setImages(data);
         } else {
-          setImages((prev) => [...prev, ...data]);
+          setTotalPages(data.total_pages);
+          setImages((prev) => [...prev, ...data.results]);
+          if (data.total > 12) {
+            setLoadMore(true);
+          } else {
+            setLoadMore(false);
+          }
+          if (page == totalPages) {
+            setLoadMore(false);
+            toast.success("No more results", {
+              duration: 2000,
+            });
+          }
         }
       } catch (error) {
         serError(true);
@@ -65,24 +84,12 @@ function App() {
 
   return (
     <>
+      <Toaster position="bottom-center" />
       <SearchBar setQuery={setQuery} setImages={setImages} />
       {error && <ErrorMessage />}
       <ImageGallery gallery={images} onClick={handleClick} />
-      <>
-        {loader && (
-          <ThreeDots
-            visible={true}
-            height="80"
-            width="80"
-            color="darkblue"
-            radius="9"
-            ariaLabel="three-dots-loading"
-            wrapperStyle={{}}
-            wrapperClass=""
-          />
-        )}
-      </>
-      <>{images && <LoadMoreBtn setPage={setPage} />}</>
+      <>{loader && <Loader />}</>
+      <>{loadMore && <LoadMoreBtn setPage={setPage} />}</>
       <ImageModal
         closeModal={closeModal}
         modalIsOpen={modalIsOpen}
