@@ -2,7 +2,7 @@ import React from "react";
 import s from "./ImageGallery.module.css";
 import ImageCard from "../ImageCard/ImageCard";
 
-const ImageGallery = ({ gallery }) => {
+const ImageGallery = ({ gallery, onClick }) => {
   if (!gallery) {
     return;
   }
@@ -10,10 +10,15 @@ const ImageGallery = ({ gallery }) => {
   return (
     <>
       <ul className={s.list}>
-        {gallery.data.results.map((item) => {
+        {gallery.map((item) => {
           return (
             <li key={item.id} className={s.item}>
-              <ImageCard src={item.urls.small} alt={item.description} />
+              <ImageCard
+                src={item.urls.small}
+                alt={item.description}
+                onClick={onClick}
+                modalSrc={item.urls.regular}
+              />
             </li>
           );
         })}

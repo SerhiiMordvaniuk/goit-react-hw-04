@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import s from "./SearchBar.module.css";
 
-const SearchBar = ({ setParams }) => {
+const SearchBar = ({ setQuery, setImages }) => {
   const hansleSubmit = (e) => {
     e.preventDefault();
-    setParams(e.target.elements.input.value);
+    setImages([]);
+    setQuery(e.target.elements.input.value);
+    e.target.elements.input.value = "";
   };
 
   return (
