@@ -5,8 +5,6 @@ import ImageCard from "../ImageCard/ImageCard";
 const ImageGallery = ({ gallery }) => {
   if (!gallery) {
     return;
-  } else {
-    console.log(gallery.data.results);
   }
 
   return (
