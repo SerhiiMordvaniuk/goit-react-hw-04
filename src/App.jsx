@@ -3,48 +3,54 @@ import SearchBar from "./components/SearchBar/SearchBar";
 import fetchSearch from "./gallery-api";
 import { useEffect, useState } from "react";
 import ImageGallery from "./components/ImageGallery/ImageGallery";
-import { Audio } from "react-loader-spinner";
+import { ThreeDots } from "react-loader-spinner";
+import LoadMoreBtn from "./components/LoadMoreBtn/LoadMoreBtn";
 
 function App() {
   const [params, setParams] = useState("");
-  const [articles, setArticles] = useState();
+  const [images, setImages] = useState();
   const [page, setPage] = useState(1);
   const [loader, setLoader] = useState(false);
+  const [error, serError] = useState(false);
+  const [totalPage, setTotalPage] = useState(0);
 
   useEffect(() => {
     async function fethGellery() {
       try {
         setLoader(true);
-        const response = await fetchSearch(params, page);
-
-        setArticles(response);
+        const data = await fetchSearch(params, page);
+        setImages(data);
+        // setImages((prev) => [...prev, ...data]);
       } catch (error) {
-        console.log(error);
+        serError(true);
       } finally {
         setLoader(false);
       }
     }
     fethGellery();
-  }, [params]);
-
+  }, [params, page]);
   return (
     <>
       <SearchBar setParams={setParams} />
-      <ImageGallery gallery={articles} />
-
+      {error && (
+        <p>Whoops, something went wrong! Please try reloading this page!</p>
+      )}
+      <ImageGallery gallery={images} />
       <>
         {loader && (
-          <Audio
+          <ThreeDots
+            visible={true}
             height="80"
             width="80"
+            color="darkblue"
             radius="9"
-            color="green"
             ariaLabel="three-dots-loading"
-            wrapperStyle
-            wrapperClass
+            wrapperStyle={{}}
+            wrapperClass=""
           />
         )}
       </>
+      <>{images && <LoadMoreBtn setPage={setPage} />}</>
     </>
   );
 }

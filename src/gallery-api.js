@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const KEY = "1X6RII3RoeScRHg5if82ucbsdRGfgCmSu4y1o-_zRdE";
-const fetchSearch = async (search, page) => {
+const fetchSearch = async (search, page = 1) => {
   console.log(page);
 
   if (search.trim() === "") {
