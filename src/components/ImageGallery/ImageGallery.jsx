@@ -13,10 +13,8 @@ const ImageGallery = ({ gallery }) => {
     <>
       <ul className={s.list}>
         {gallery.data.results.map((item) => {
-          console.log(item.urls.small);
-
           return (
-            <li key={item.id}>
+            <li key={item.id} className={s.item}>
               <ImageCard src={item.urls.small} alt={item.description} />
             </li>
           );
@@ -27,4 +25,3 @@ const ImageGallery = ({ gallery }) => {
 };
 
 export default ImageGallery;
-// id, likes, description, { full, small };
