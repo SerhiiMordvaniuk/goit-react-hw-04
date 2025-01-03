@@ -24,6 +24,7 @@ function App() {
   useEffect(() => {
     async function fethGellery() {
       try {
+        setLoadMore(false);
         setLoader(true);
         serError(false);
         const data = await fetchSearch(query, page);
