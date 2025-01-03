@@ -13,6 +13,8 @@ const ImageModal = ({ modalIsOpen, closeModal, image, alt }) => {
       padding: "0",
       border: "none",
       borderRadius: "16px",
+      maxHeight: "680px",
+      objectFit: "contain",
     },
     overlay: {
       backgroundColor: "rgb(40, 40, 40, 0.9)",

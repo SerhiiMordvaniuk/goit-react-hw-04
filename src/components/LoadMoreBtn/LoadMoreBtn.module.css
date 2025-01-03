@@ -4,8 +4,9 @@
   color: darkblue;
   cursor: pointer;
   /* transition: all 550ms; */
-
+  border-bottom: 0 solid darkblue;
+  transition: all 150ms;
   &:hover {
-    border-bottom: 1px solid darkblue;
+    border-bottom-width: 2px;
   }
 }

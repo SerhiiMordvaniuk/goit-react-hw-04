@@ -1,12 +1,10 @@
 .img {
-  border-radius: 16px;
-  transition: all 250ms;
-  width: 250px;
-  height: 250px;
+  transition: all 550ms;
+  width: 280px;
+  height: 280px;
   object-fit: cover;
   &:hover {
     transform: scale(1.05);
     cursor: pointer;
-    box-shadow: 4px 4px 4px gray;
   }
 }

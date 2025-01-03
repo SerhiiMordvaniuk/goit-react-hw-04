@@ -13,7 +13,7 @@ function App() {
   const [query, setQuery] = useState("");
   const [images, setImages] = useState();
   const [page, setPage] = useState(1);
-  const [loader, setLoader] = useState(true);
+  const [loader, setLoader] = useState(false);
   const [error, serError] = useState(false);
   const [modalIsOpen, setIsOpen] = useState(false);
   const [modalImg, setModalImg] = useState();
@@ -26,13 +26,15 @@ function App() {
       try {
         setLoader(true);
         serError(false);
-        if (query.trim() === "") {
-          return;
-        }
         const data = await fetchSearch(query, page);
         if (!images) {
           setImages(data);
         } else {
+          if (data.total_pages === 0) {
+            toast.error("No results", {
+              duration: 2000,
+            });
+          }
           setTotalPages(data.total_pages);
           setImages((prev) => [...prev, ...data.results]);
           if (data.total > 12) {
@@ -85,7 +87,7 @@ function App() {
   return (
     <>
       <Toaster position="bottom-center" />
-      <SearchBar setQuery={setQuery} setImages={setImages} />
+      <SearchBar setQuery={setQuery} setImages={setImages} prevQuery={query} />
       {error && <ErrorMessage />}
       <ImageGallery gallery={images} onClick={handleClick} />
       <>{loader && <Loader />}</>
