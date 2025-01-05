@@ -36,8 +36,6 @@ function App() {
           if (data === undefined) {
             return;
           } else {
-            console.log(page);
-
             if (data.total_pages === 0) {
               toast.error("No results", {
                 duration: 2000,
@@ -62,7 +60,6 @@ function App() {
         }
       } catch (error) {
         serError(true);
-        console.log(error);
       } finally {
         setLoader(false);
       }
