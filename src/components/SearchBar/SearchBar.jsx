@@ -3,20 +3,20 @@ import s from "./SearchBar.module.css";
 import toast, { Toaster } from "react-hot-toast";
 import { CiSearch } from "react-icons/ci";
 
-const SearchBar = ({ setQuery, setImages, prevQuery }) => {
+const SearchBar = ({ setQuery, clearImages, prevQuery }) => {
   const hansleSubmit = (e) => {
     e.preventDefault();
     let newQuery = e.target.elements.input.value;
     if (newQuery.trim() === "") {
       toast.error("Please, enter your query", {
         duration: 2000,
-        position: "top-right",
+        position: "top-center",
       });
       return;
     } else if (newQuery.trim() === prevQuery) {
       toast.error("Please, enter new query", {
         duration: 2000,
-        position: "top-right",
+        position: "top-center ",
       });
       e.target.elements.input.value = "";
       return;
@@ -28,7 +28,7 @@ const SearchBar = ({ setQuery, setImages, prevQuery }) => {
       e.target.elements.input.value = "";
       return;
     }
-    setImages([]);
+    clearImages();
     setQuery(newQuery);
     e.target.elements.input.value = "";
   };

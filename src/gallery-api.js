@@ -8,7 +8,6 @@ const fetchSearch = async (search, page) => {
   const response = await axios.get(
     `https://api.unsplash.com/search/photos/?page=${page}&per_page=12&client_id=${KEY}&query=${search}`
   );
-  console.log(response.data.results[0]);
 
   return response.data;
 };

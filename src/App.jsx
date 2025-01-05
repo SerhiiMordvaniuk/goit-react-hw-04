@@ -11,53 +11,61 @@ import Loader from "./components/Loader/Loader";
 
 function App() {
   const [query, setQuery] = useState("");
-  const [images, setImages] = useState();
+  const [images, setImages] = useState(false);
   const [page, setPage] = useState(1);
   const [loader, setLoader] = useState(false);
   const [error, serError] = useState(false);
   const [modalIsOpen, setIsOpen] = useState(false);
   const [modalImg, setModalImg] = useState();
   const [scroll, setScroll] = useState(false);
-  const [totalPages, setTotalPages] = useState(0);
   const [loadMore, setLoadMore] = useState(false);
+  const [first, setFirst] = useState(false);
 
   useEffect(() => {
+    let totalPages = 0;
     async function fethGellery() {
       try {
         setLoadMore(false);
         setLoader(true);
         serError(false);
         const data = await fetchSearch(query, page);
-        if (!images) {
+        if (!first) {
           setImages(data);
+          setFirst(true);
         } else {
-          if (data.total_pages === 0) {
-            toast.error("No results", {
-              duration: 2000,
-            });
-          }
-          setTotalPages(data.total_pages);
-          setImages((prev) => [...prev, ...data.results]);
-          if (data.total > 12) {
-            setLoadMore(true);
+          if (data === undefined) {
+            return;
           } else {
-            setLoadMore(false);
-          }
-          if (page == totalPages) {
-            setLoadMore(false);
-            toast.success("No more results", {
-              duration: 2000,
-            });
+            if (data.total_pages === 0) {
+              toast.error("No results", {
+                duration: 2000,
+                position: "top-center",
+              });
+            }
+            totalPages = data.total_pages;
+            if (page === totalPages) {
+              setLoadMore(false);
+              toast.success("No more results", {
+                duration: 2000,
+              });
+            }
+            setImages((prev) => [...prev, ...data.results]);
+            if (data.total > 12) {
+              setLoadMore(true);
+            } else {
+              setLoadMore(false);
+            }
           }
         }
       } catch (error) {
         serError(true);
+        console.log(error);
       } finally {
         setLoader(false);
       }
     }
     fethGellery();
-  }, [query, page]);
+  }, [query, page, first]);
 
   useEffect(() => {
     if (scroll) {
@@ -85,10 +93,18 @@ function App() {
     setModalImg(item);
   };
 
+  const clearImages = () => {
+    setImages([]);
+  };
+
   return (
     <>
       <Toaster position="bottom-center" />
-      <SearchBar setQuery={setQuery} setImages={setImages} prevQuery={query} />
+      <SearchBar
+        setQuery={setQuery}
+        clearImages={clearImages}
+        prevQuery={query}
+      />
       {error && <ErrorMessage />}
       <ImageGallery gallery={images} onClick={handleClick} />
       <>{loader && <Loader />}</>
