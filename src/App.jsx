@@ -36,25 +36,28 @@ function App() {
           if (data === undefined) {
             return;
           } else {
+            console.log(page);
+
             if (data.total_pages === 0) {
               toast.error("No results", {
                 duration: 2000,
                 position: "top-center",
               });
             }
+            if (data.total > 12) {
+              setLoadMore(true);
+            } else {
+              setLoadMore(false);
+            }
             totalPages = data.total_pages;
             if (page === totalPages) {
+              setLoadMore(false);
               setLoadMore(false);
               toast.success("No more results", {
                 duration: 2000,
               });
             }
             setImages((prev) => [...prev, ...data.results]);
-            if (data.total > 12) {
-              setLoadMore(true);
-            } else {
-              setLoadMore(false);
-            }
           }
         }
       } catch (error) {
@@ -95,6 +98,7 @@ function App() {
 
   const clearImages = () => {
     setImages([]);
+    setPage(1);
   };
 
   return (
