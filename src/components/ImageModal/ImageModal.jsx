@@ -1,5 +1,4 @@
 import Modal from "react-modal";
-import s from "./ImageModal.module.css";
 Modal.setAppElement("#root");
 
 const ImageModal = ({ modalIsOpen, closeModal, image, alt }) => {
@@ -14,7 +13,6 @@ const ImageModal = ({ modalIsOpen, closeModal, image, alt }) => {
       border: "none",
       borderRadius: "16px",
       maxHeight: "680px",
-      objectFit: "contain",
     },
     overlay: {
       backgroundColor: "rgb(40, 40, 40, 0.9)",

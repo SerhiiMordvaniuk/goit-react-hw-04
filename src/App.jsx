@@ -11,10 +11,10 @@ import Loader from "./components/Loader/Loader";
 
 function App() {
   const [query, setQuery] = useState("");
-  const [images, setImages] = useState(false);
+  const [images, setImages] = useState([]);
   const [page, setPage] = useState(1);
   const [loader, setLoader] = useState(false);
-  const [error, serError] = useState(false);
+  const [error, setError] = useState(false);
   const [modalIsOpen, setIsOpen] = useState(false);
   const [modalImg, setModalImg] = useState();
   const [scroll, setScroll] = useState(false);
@@ -27,7 +27,7 @@ function App() {
       try {
         setLoadMore(false);
         setLoader(true);
-        serError(false);
+        setError(false);
         const data = await fetchSearch(query, page);
         if (!first) {
           setImages(data);
@@ -37,10 +37,7 @@ function App() {
             return;
           } else {
             if (data.total_pages === 0) {
-              toast.error("No results", {
-                duration: 2000,
-                position: "top-center",
-              });
+              toast.error("No results");
             }
             if (data.total > 12) {
               setLoadMore(true);
@@ -52,14 +49,14 @@ function App() {
               setLoadMore(false);
               setLoadMore(false);
               toast.success("No more results", {
-                duration: 2000,
+                position: "bottom-center",
               });
             }
             setImages((prev) => [...prev, ...data.results]);
           }
         }
       } catch (error) {
-        serError(true);
+        setError(true);
       } finally {
         setLoader(false);
       }
@@ -100,7 +97,7 @@ function App() {
 
   return (
     <>
-      <Toaster position="bottom-center" />
+      <Toaster position="bottom-right" duration="2000" />
       <SearchBar
         setQuery={setQuery}
         clearImages={clearImages}

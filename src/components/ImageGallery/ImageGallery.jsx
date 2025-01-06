@@ -3,10 +3,6 @@ import s from "./ImageGallery.module.css";
 import ImageCard from "../ImageCard/ImageCard";
 
 const ImageGallery = ({ gallery, onClick }) => {
-  // console.log(typeof gallery);
-
-  // console.log(gallery);
-
   if (!gallery) {
     return;
   }

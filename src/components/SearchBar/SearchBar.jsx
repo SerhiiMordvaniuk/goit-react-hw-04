@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import s from "./SearchBar.module.css";
 import toast, { Toaster } from "react-hot-toast";
 import { CiSearch } from "react-icons/ci";
@@ -8,29 +7,21 @@ const SearchBar = ({ setQuery, clearImages, prevQuery }) => {
     e.preventDefault();
     let newQuery = e.target.elements.input.value;
     if (newQuery.trim() === "") {
-      toast.error("Please, enter your query", {
-        duration: 2000,
-        position: "top-center",
-      });
+      toast.error("Please, enter your query");
       return;
     } else if (newQuery.trim() === prevQuery) {
-      toast.error("Please, enter new query", {
-        duration: 2000,
-        position: "top-center ",
-      });
+      toast.error("Please, enter new query");
       e.target.elements.input.value = "";
       return;
     } else if (newQuery.length < 3) {
-      toast.error("The query must be at least three letters long", {
-        duration: 2000,
-        position: "top-rigth",
-      });
+      toast.error("The query must be at least three letters long");
       e.target.elements.input.value = "";
       return;
+    } else {
+      clearImages();
+      setQuery(newQuery);
+      e.target.elements.input.value = "";
     }
-    clearImages();
-    setQuery(newQuery);
-    e.target.elements.input.value = "";
   };
 
   return (

@@ -1,4 +1,3 @@
-import React from "react";
 import s from "./LoadMoreBtn.module.css";
 
 const LoadMoreBtn = ({ setPage }) => {
@@ -8,10 +7,6 @@ const LoadMoreBtn = ({ setPage }) => {
         className={s.btn}
         onClick={() => {
           setPage((prev) => prev + 1);
-          setTimeout(
-            scrollBy.bind(null, { behavior: "smooth", top: 300 }),
-            500
-          );
         }}
       >
         {" "}
